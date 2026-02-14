@@ -58,6 +58,9 @@
     },
     "packages/shared": {
       "name": "@session-notes/shared",
+      "dependencies": {
+        "zod": "^4.3.6",
+      },
     },
   },
   "packages": {
