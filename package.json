@@ -1,0 +1,5 @@
+{
+  "name": "session-notes",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"]
+}

@@ -1,0 +1,23 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "session-notes",
+    },
+    "apps/server": {
+      "name": "@session-notes/server",
+      "dependencies": {
+        "@session-notes/shared": "workspace:*",
+      },
+    },
+    "packages/shared": {
+      "name": "@session-notes/shared",
+    },
+  },
+  "packages": {
+    "@session-notes/server": ["@session-notes/server@workspace:apps/server"],
+
+    "@session-notes/shared": ["@session-notes/shared@workspace:packages/shared"],
+  }
+}

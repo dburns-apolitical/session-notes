@@ -1,7 +1,28 @@
+# Dependencies
 node_modules/
+
+# Build outputs
 dist/
+
+# Expo
 .expo/
+
+# Environment variables
 .env
 .env.local
 .env.production
+
+# Worktrees
 .worktrees/
+
+# OS files
+.DS_Store
+
+# Bun
+bun.lockb
+
+# TypeScript
+*.tsbuildinfo
+
+# Turbo
+.turbo/
