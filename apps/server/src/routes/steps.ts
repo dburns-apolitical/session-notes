@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "../db";
-import { song, step, cell } from "../db/schema";
+import { song, step, cell, projectMember } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { createStepSchema, updateStepSchema } from "@session-notes/shared";
 import { broadcast } from "../ws";
@@ -10,7 +10,18 @@ const steps = new Hono()
   .use(requireAuth)
   .post("/projects/:projectId/steps", async (c) => {
     const projectId = c.req.param("projectId");
+    const { user } = c.get("authSession");
     const body = createStepSchema.parse(await c.req.json());
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     const existing = await db.select().from(step).where(eq(step.projectId, projectId));
     const maxPos = existing.reduce((max, s) => Math.max(max, s.position), -1);
@@ -35,7 +46,21 @@ const steps = new Hono()
   })
   .patch("/steps/:id", async (c) => {
     const stepId = c.req.param("id");
+    const { user } = c.get("authSession");
     const body = updateStepSchema.parse(await c.req.json());
+
+    const [existing] = await db.select().from(step).where(eq(step.id, stepId));
+    if (!existing) return c.json({ error: "Not found" }, 404);
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, existing.projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     const [updated] = await db
       .update(step)
@@ -51,9 +76,20 @@ const steps = new Hono()
   })
   .delete("/steps/:id", async (c) => {
     const stepId = c.req.param("id");
+    const { user } = c.get("authSession");
 
     const [existing] = await db.select().from(step).where(eq(step.id, stepId));
     if (!existing) return c.json({ error: "Not found" }, 404);
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, existing.projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     await db.delete(step).where(eq(step.id, stepId));
 

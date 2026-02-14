@@ -5,6 +5,7 @@ import { project, projectMember, song, step, cell } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { generateInviteCode } from "../lib/invite-code";
 import { createProjectSchema, joinProjectSchema } from "@session-notes/shared";
+import { broadcast } from "../ws";
 
 const projects = new Hono()
   .use(requireAuth)
@@ -109,6 +110,8 @@ const projects = new Hono()
       projectId: proj.id,
       userId: user.id,
     });
+
+    broadcast(proj.id, "project:member-joined", { userId: user.id, projectId: proj.id });
 
     return c.json(proj);
   })

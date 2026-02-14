@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "../db";
-import { song, step, cell } from "../db/schema";
+import { song, step, cell, projectMember } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { createSongSchema, updateSongSchema } from "@session-notes/shared";
 import { broadcast } from "../ws";
@@ -10,7 +10,18 @@ const songs = new Hono()
   .use(requireAuth)
   .post("/projects/:projectId/songs", async (c) => {
     const projectId = c.req.param("projectId");
+    const { user } = c.get("authSession");
     const body = createSongSchema.parse(await c.req.json());
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     const existing = await db.select().from(song).where(eq(song.projectId, projectId));
     const maxPos = existing.reduce((max, s) => Math.max(max, s.position), -1);
@@ -33,7 +44,21 @@ const songs = new Hono()
   })
   .patch("/songs/:id", async (c) => {
     const songId = c.req.param("id");
+    const { user } = c.get("authSession");
     const body = updateSongSchema.parse(await c.req.json());
+
+    const [existing] = await db.select().from(song).where(eq(song.id, songId));
+    if (!existing) return c.json({ error: "Not found" }, 404);
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, existing.projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     const [updated] = await db
       .update(song)
@@ -49,9 +74,20 @@ const songs = new Hono()
   })
   .delete("/songs/:id", async (c) => {
     const songId = c.req.param("id");
+    const { user } = c.get("authSession");
 
     const [existing] = await db.select().from(song).where(eq(song.id, songId));
     if (!existing) return c.json({ error: "Not found" }, 404);
+
+    const membership = await db
+      .select()
+      .from(projectMember)
+      .where(eq(projectMember.projectId, existing.projectId))
+      .then((rows) => rows.find((r) => r.userId === user.id));
+
+    if (!membership) {
+      return c.json({ error: "Not a member" }, 403);
+    }
 
     await db.delete(song).where(eq(song.id, songId));
 
