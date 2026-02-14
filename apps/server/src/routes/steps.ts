@@ -4,6 +4,7 @@ import { db } from "../db";
 import { song, step, cell } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { createStepSchema, updateStepSchema } from "@session-notes/shared";
+import { broadcast } from "../ws";
 
 const steps = new Hono()
   .use(requireAuth)
@@ -28,6 +29,8 @@ const steps = new Hono()
       newCells.push(...inserted);
     }
 
+    broadcast(projectId, "project:step-added", { step: newStep, cells: newCells });
+
     return c.json({ step: newStep, cells: newCells }, 201);
   })
   .patch("/steps/:id", async (c) => {
@@ -41,11 +44,21 @@ const steps = new Hono()
       .returning();
 
     if (!updated) return c.json({ error: "Not found" }, 404);
+
+    broadcast(updated.projectId, "project:step-updated", updated);
+
     return c.json(updated);
   })
   .delete("/steps/:id", async (c) => {
     const stepId = c.req.param("id");
+
+    const [existing] = await db.select().from(step).where(eq(step.id, stepId));
+    if (!existing) return c.json({ error: "Not found" }, 404);
+
     await db.delete(step).where(eq(step.id, stepId));
+
+    broadcast(existing.projectId, "project:step-deleted", { stepId });
+
     return c.json({ ok: true });
   });
 

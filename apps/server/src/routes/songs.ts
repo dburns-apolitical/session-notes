@@ -4,6 +4,7 @@ import { db } from "../db";
 import { song, step, cell } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { createSongSchema, updateSongSchema } from "@session-notes/shared";
+import { broadcast } from "../ws";
 
 const songs = new Hono()
   .use(requireAuth)
@@ -26,6 +27,8 @@ const songs = new Hono()
       );
     }
 
+    broadcast(projectId, "project:song-added", newSong);
+
     return c.json(newSong, 201);
   })
   .patch("/songs/:id", async (c) => {
@@ -39,11 +42,21 @@ const songs = new Hono()
       .returning();
 
     if (!updated) return c.json({ error: "Not found" }, 404);
+
+    broadcast(updated.projectId, "project:song-updated", updated);
+
     return c.json(updated);
   })
   .delete("/songs/:id", async (c) => {
     const songId = c.req.param("id");
+
+    const [existing] = await db.select().from(song).where(eq(song.id, songId));
+    if (!existing) return c.json({ error: "Not found" }, 404);
+
     await db.delete(song).where(eq(song.id, songId));
+
+    broadcast(existing.projectId, "project:song-deleted", { songId });
+
     return c.json({ ok: true });
   });
 
