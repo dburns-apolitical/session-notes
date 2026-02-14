@@ -1,0 +1,12 @@
+[build]
+  command = "cd ../.. && bun install && cd apps/mobile && bunx expo export --platform web"
+  publish = "dist"
+  base = "apps/mobile"
+
+[build.environment]
+  EXPO_PUBLIC_API_URL = "https://api.yourdomain.com"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
