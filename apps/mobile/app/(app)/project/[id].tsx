@@ -3,6 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useProject, useAddSong, useAddStep, useToggleCell } from "../../../hooks/use-project";
 import { ProjectHeader } from "../../../components/ProjectHeader";
 import { ProjectGrid } from "../../../components/ProjectGrid";
+import { CellDetailModal } from "../../../components/CellDetailModal";
 import { useState } from "react";
 
 export default function ProjectScreen() {
@@ -12,6 +13,8 @@ export default function ProjectScreen() {
   const addStep = useAddStep(id!);
   const toggleCell = useToggleCell(id!);
   const [selectedCell, setSelectedCell] = useState<any>(null);
+  const [selectedSong, setSelectedSong] = useState<any>(null);
+  const [selectedStep, setSelectedStep] = useState<any>(null);
 
   if (isLoading || !project) {
     return (
@@ -34,11 +37,28 @@ export default function ProjectScreen() {
         cells={project.cells || []}
         notes={[]}
         onCellPress={(cell, song, step) => {
-          // Toggle completion for now; modal will be added in Task 12
-          toggleCell.mutate({ cellId: cell.id, isComplete: !cell.isComplete });
+          setSelectedCell(cell);
+          setSelectedSong(song);
+          setSelectedStep(step);
         }}
         onAddSong={(name) => addSong.mutate(name)}
         onAddStep={(name) => addStep.mutate(name)}
+      />
+      <CellDetailModal
+        visible={!!selectedCell}
+        cell={selectedCell}
+        songName={selectedSong?.name || ""}
+        stepName={selectedStep?.name || ""}
+        projectId={id!}
+        onClose={() => {
+          setSelectedCell(null);
+          setSelectedSong(null);
+          setSelectedStep(null);
+        }}
+        onToggleComplete={(cellId, isComplete) => {
+          toggleCell.mutate({ cellId, isComplete });
+          setSelectedCell((prev: any) => prev ? { ...prev, isComplete } : null);
+        }}
       />
     </View>
   );
