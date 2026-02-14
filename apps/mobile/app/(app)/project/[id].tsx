@@ -5,6 +5,7 @@ import { ProjectHeader } from "../../../components/ProjectHeader";
 import { ProjectGrid } from "../../../components/ProjectGrid";
 import { CellDetailModal } from "../../../components/CellDetailModal";
 import { useState } from "react";
+import { useProjectWebSocket } from "../../../hooks/use-project-websocket";
 
 export default function ProjectScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -12,6 +13,7 @@ export default function ProjectScreen() {
   const addSong = useAddSong(id!);
   const addStep = useAddStep(id!);
   const toggleCell = useToggleCell(id!);
+  useProjectWebSocket(id!);
   const [selectedCell, setSelectedCell] = useState<any>(null);
   const [selectedSong, setSelectedSong] = useState<any>(null);
   const [selectedStep, setSelectedStep] = useState<any>(null);
