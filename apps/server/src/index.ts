@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { auth } from "./auth";
+import { projects } from "./routes/projects";
 
 const app = new Hono();
 
@@ -14,6 +15,8 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => {
 });
 
 app.get("/health", (c) => c.json({ ok: true }));
+
+app.route("/api/projects", projects);
 
 export default {
   port: 3000,
