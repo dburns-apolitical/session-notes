@@ -10,7 +10,7 @@ export default function SignIn() {
     try {
       await authClient.signIn.social({
         provider,
-        callbackURL: "/(app)/(tabs)",
+        callbackURL: "/",
       });
     } catch (error: any) {
       Alert.alert("Error", error.message || `Sign in with ${provider} failed`);
