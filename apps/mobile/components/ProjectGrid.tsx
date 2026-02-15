@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { GridCell } from "./GridCell";
 import { Icon } from "./ui/Icon";
+import { theme, getStepColor } from "../constants/theme";
 
 type Song = { id: string; name: string; position: number };
 type Step = { id: string; name: string; position: number };
@@ -19,7 +20,7 @@ type Props = {
 };
 
 const STEP_COL_WIDTH = 100;
-const CELL_WIDTH = 80;
+const CELL_WIDTH = 56;
 
 export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong, onAddStep }: Props) {
   const [newSongName, setNewSongName] = useState("");
@@ -74,19 +75,20 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
 
           {/* Grid rows: step label + cells */}
           <ScrollView showsVerticalScrollIndicator={true}>
-            {sortedSteps.map((step) => (
+            {sortedSteps.map((step, stepIndex) => (
               <View key={step.id} style={styles.row}>
-                <View style={styles.stepLabel}>
+                <View style={[styles.stepLabel, { borderLeftColor: getStepColor(stepIndex), borderLeftWidth: 3 }]}>
                   <Text style={styles.stepLabelText} numberOfLines={2}>{step.name}</Text>
                 </View>
                 {sortedSongs.map((song) => {
                   const cell = getCell(song.id, step.id);
-                  if (!cell) return <View key={song.id} style={{ width: CELL_WIDTH, height: 60 }} />;
+                  if (!cell) return <View key={song.id} style={{ width: CELL_WIDTH, height: 56 }} />;
                   return (
                     <GridCell
                       key={cell.id}
                       isComplete={cell.isComplete}
                       noteCount={getNoteCount(cell.id)}
+                      color={getStepColor(stepIndex)}
                       onPress={() => onCellPress(cell, song, step)}
                     />
                   );
@@ -149,17 +151,62 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  row: { flexDirection: "row" },
-  stepLabel: { width: STEP_COL_WIDTH, height: 60, justifyContent: "center", paddingHorizontal: 8, backgroundColor: "#f8f8f8", borderBottomWidth: 1, borderBottomColor: "#eee" },
-  stepLabelText: { fontSize: 13, fontWeight: "500" },
-  songHeader: { width: CELL_WIDTH, height: 60, justifyContent: "center", alignItems: "center", paddingHorizontal: 4, borderBottomWidth: 2, borderBottomColor: "#ddd", backgroundColor: "#fafafa" },
-  songName: { fontSize: 12, fontWeight: "600", textAlign: "center" },
-  addSongButton: { width: 40, height: 60, justifyContent: "center", alignItems: "center", backgroundColor: "#f0f0f0" },
-  addStepRow: { height: 40, justifyContent: "center", paddingLeft: 8, backgroundColor: "#f0f0f0" },
-  addButtonText: { fontSize: 18, color: "#007AFF", fontWeight: "600" },
-  inlineInput: { flexDirection: "row", padding: 12, backgroundColor: "#fff", borderTopWidth: 1, borderTopColor: "#eee", gap: 8, alignItems: "center" },
-  input: { flex: 1, borderWidth: 1, borderColor: "#ccc", borderRadius: 8, padding: 8, fontSize: 14 },
-  submitText: { color: "#007AFF", fontWeight: "600", fontSize: 16 },
-  cancelText: { color: "#999", fontSize: 16 },
+  container: { flex: 1, backgroundColor: theme.background },
+  row: { flexDirection: "row", alignItems: "center" },
+  stepLabel: {
+    width: STEP_COL_WIDTH,
+    height: 56,
+    justifyContent: "center",
+    paddingHorizontal: 8,
+    backgroundColor: theme.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.border,
+  },
+  stepLabelText: { fontSize: 13, fontWeight: "500", color: theme.textPrimary },
+  songHeader: {
+    width: CELL_WIDTH,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 4,
+    borderBottomWidth: 2,
+    borderBottomColor: theme.border,
+    backgroundColor: theme.surface,
+  },
+  songName: { fontSize: 12, fontWeight: "600", textAlign: "center", color: theme.textPrimary },
+  addSongButton: {
+    width: 40,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.surface,
+  },
+  addStepRow: {
+    height: 40,
+    justifyContent: "center",
+    paddingLeft: 8,
+    backgroundColor: theme.surface,
+  },
+  addButtonText: { fontSize: 18, color: theme.accent, fontWeight: "600" },
+  inlineInput: {
+    flexDirection: "row",
+    padding: 12,
+    backgroundColor: theme.surface,
+    borderTopWidth: 1,
+    borderTopColor: theme.border,
+    gap: 8,
+    alignItems: "center",
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: theme.border,
+    borderRadius: 8,
+    padding: 8,
+    fontSize: 14,
+    color: theme.textPrimary,
+    backgroundColor: theme.surfaceLight,
+  },
+  submitText: { color: theme.accent, fontWeight: "600", fontSize: 16 },
+  cancelText: { color: theme.textSecondary, fontSize: 16 },
 });
