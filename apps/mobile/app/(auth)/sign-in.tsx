@@ -42,7 +42,7 @@ export default function SignIn() {
         </Text>
       </TouchableOpacity>
 
-      {Platform.OS === "ios" || Platform.OS === "web" ? (
+      {Platform.OS === "ios" ? (
         <TouchableOpacity
           style={[styles.button, styles.appleButton]}
           onPress={() => handleOAuthSignIn("apple")}
