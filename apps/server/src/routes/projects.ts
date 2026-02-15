@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { eq, or } from "drizzle-orm";
 import { db } from "../db";
-import { project, projectMember, song, step, cell } from "../db/schema";
+import { project, projectMember, song, step, cell, user as userTable } from "../db/schema";
 import { requireAuth } from "../middleware/auth";
 import { generateInviteCode } from "../lib/invite-code";
 import { createProjectSchema, joinProjectSchema } from "@session-notes/shared";
@@ -83,7 +83,16 @@ const projects = new Hono()
           or(...songs.map((s) => eq(cell.songId, s.id)))
         )
       : [];
-    const members = await db.select().from(projectMember).where(eq(projectMember.projectId, projectId));
+    const members = await db
+      .select({
+        id: projectMember.id,
+        userId: projectMember.userId,
+        name: userTable.name,
+        image: userTable.image,
+      })
+      .from(projectMember)
+      .innerJoin(userTable, eq(projectMember.userId, userTable.id))
+      .where(eq(projectMember.projectId, projectId));
 
     return c.json({ ...proj, songs, steps, cells, members });
   })

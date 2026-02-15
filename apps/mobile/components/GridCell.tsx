@@ -19,7 +19,7 @@ export function GridCell({ isComplete, noteCount, color, onPress }: Props) {
       ]}
       onPress={onPress}
     >
-      {isComplete && <Icon name="Check" size={20} color="#FFFFFF" />}
+      {isComplete && <Icon name="Check" size={16} color="#FFFFFF" />}
       {noteCount > 0 && (
         <View style={styles.noteBadge}>
           <Text style={styles.noteCount}>{noteCount}</Text>
@@ -31,14 +31,14 @@ export function GridCell({ isComplete, noteCount, color, onPress }: Props) {
 
 const styles = StyleSheet.create({
   cell: {
-    width: 48,
-    height: 48,
+    width: 36,
+    height: 36,
     borderWidth: 2,
-    borderRadius: 10,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
-    margin: 4,
+    margin: 8,
   },
   noteBadge: {
     position: "absolute",

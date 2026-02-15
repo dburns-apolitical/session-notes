@@ -20,7 +20,7 @@ type Props = {
 };
 
 const STEP_COL_WIDTH = 100;
-const CELL_WIDTH = 56;
+const CELL_WIDTH = 52;
 
 export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong, onAddStep }: Props) {
   const [newSongName, setNewSongName] = useState("");
@@ -69,7 +69,7 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
             ))}
             {/* Add song button */}
             <TouchableOpacity style={styles.addSongButton} onPress={() => setShowAddSong(true)}>
-              <Icon name="Plus" size={18} color="#007AFF" />
+              <Icon name="Plus" size={18} color={theme.accent} />
             </TouchableOpacity>
           </View>
 
@@ -82,7 +82,7 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
                 </View>
                 {sortedSongs.map((song) => {
                   const cell = getCell(song.id, step.id);
-                  if (!cell) return <View key={song.id} style={{ width: CELL_WIDTH, height: 56 }} />;
+                  if (!cell) return <View key={song.id} style={{ width: CELL_WIDTH, height: 52 }} />;
                   return (
                     <GridCell
                       key={cell.id}
@@ -97,12 +97,11 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
             ))}
 
             {/* Add step button */}
-            <TouchableOpacity style={styles.addStepRow} onPress={() => setShowAddStep(true)}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-                <Icon name="Plus" size={16} color="#007AFF" />
-                <Text style={styles.addButtonText}>Add Step</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.addStepButton} onPress={() => setShowAddStep(true)}>
+                <Icon name="Plus" size={18} color={theme.accent} />
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </View>
       </ScrollView>
@@ -155,39 +154,32 @@ const styles = StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center" },
   stepLabel: {
     width: STEP_COL_WIDTH,
-    height: 56,
+    height: 52,
     justifyContent: "center",
     paddingHorizontal: 8,
-    backgroundColor: theme.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.border,
   },
   stepLabelText: { fontSize: 13, fontWeight: "500", color: theme.textPrimary },
   songHeader: {
     width: CELL_WIDTH,
-    height: 56,
+    height: 52,
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: theme.border,
-    backgroundColor: theme.surface,
   },
-  songName: { fontSize: 12, fontWeight: "600", textAlign: "center", color: theme.textPrimary },
+  songName: { fontSize: 12, fontWeight: "600", textAlign: "center", color: theme.textSecondary },
   addSongButton: {
     width: 40,
-    height: 56,
+    height: 52,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.surface,
   },
-  addStepRow: {
+  addStepButton: {
+    width: STEP_COL_WIDTH,
     height: 40,
     justifyContent: "center",
-    paddingLeft: 8,
-    backgroundColor: theme.surface,
+    alignItems: "flex-start",
+    paddingLeft: 10,
   },
-  addButtonText: { fontSize: 18, color: theme.accent, fontWeight: "600" },
   inlineInput: {
     flexDirection: "row",
     padding: 12,

@@ -32,7 +32,7 @@ export default function ProjectScreen() {
       <ProjectHeader
         name={project.name}
         inviteCode={project.inviteCode}
-        memberCount={project.members?.length || 0}
+        members={project.members || []}
       />
       <ProjectGrid
         songs={project.songs || []}
