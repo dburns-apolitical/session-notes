@@ -2,6 +2,13 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native";
 import { authClient } from "../../lib/auth-client";
 
+const getCallbackURL = () => {
+  if (Platform.OS === "web" && typeof window !== "undefined") {
+    return window.location.origin + "/";
+  }
+  return "/";
+};
+
 export default function SignIn() {
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -10,7 +17,7 @@ export default function SignIn() {
     try {
       await authClient.signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: getCallbackURL(),
       });
     } catch (error: any) {
       Alert.alert("Error", error.message || `Sign in with ${provider} failed`);
