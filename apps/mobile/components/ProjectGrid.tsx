@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { GridCell } from "./GridCell";
+import { Icon } from "./ui/Icon";
 
 type Song = { id: string; name: string; position: number };
 type Step = { id: string; name: string; position: number };
@@ -67,7 +68,7 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
             ))}
             {/* Add song button */}
             <TouchableOpacity style={styles.addSongButton} onPress={() => setShowAddSong(true)}>
-              <Text style={styles.addButtonText}>+</Text>
+              <Icon name="Plus" size={18} color="#007AFF" />
             </TouchableOpacity>
           </View>
 
@@ -95,7 +96,10 @@ export function ProjectGrid({ songs, steps, cells, notes, onCellPress, onAddSong
 
             {/* Add step button */}
             <TouchableOpacity style={styles.addStepRow} onPress={() => setShowAddStep(true)}>
-              <Text style={styles.addButtonText}>+ Add Step</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+                <Icon name="Plus" size={16} color="#007AFF" />
+                <Text style={styles.addButtonText}>Add Step</Text>
+              </View>
             </TouchableOpacity>
           </ScrollView>
         </View>

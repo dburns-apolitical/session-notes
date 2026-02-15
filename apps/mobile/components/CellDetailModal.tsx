@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useNotes, useAddNote } from "../hooks/use-notes";
 import { NoteThread } from "./NoteThread";
+import { Icon } from "./ui/Icon";
 
 type CellData = {
   id: string;
@@ -64,8 +65,8 @@ export function CellDetailModal({
               <Text style={styles.songName}>{songName}</Text>
               <Text style={styles.stepName}>{stepName}</Text>
             </View>
-            <TouchableOpacity onPress={onClose}>
-              <Text style={styles.closeText}>Close</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={8}>
+              <Icon name="X" size={24} color="#007AFF" />
             </TouchableOpacity>
           </View>
 
@@ -129,7 +130,6 @@ const styles = StyleSheet.create({
   },
   songName: { fontSize: 18, fontWeight: "bold" },
   stepName: { fontSize: 14, color: "#666", marginTop: 2 },
-  closeText: { color: "#007AFF", fontSize: 16 },
   toggleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
