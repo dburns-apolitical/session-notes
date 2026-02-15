@@ -18,7 +18,7 @@ packages/shared/ — Zod schemas & shared types
 |-------|------|
 | Mobile | React Native 0.81, Expo Router 6, TanStack Query 5 |
 | Server | Bun, Hono, Drizzle ORM, PostgreSQL (Neon) |
-| Auth | BetterAuth (email/password, session cookies) |
+| Auth | BetterAuth (Google + Apple OAuth, session cookies) |
 | Real-time | Bun native WebSocket pub/sub |
 | Validation | Zod (shared between client/server) |
 | API client | Hono RPC (type-safe) |
@@ -48,7 +48,7 @@ cd apps/mobile && bun lint               # lint mobile (eslint-config-expo)
 
 ## Architecture Notes
 
-- **Auth flow:** BetterAuth sessions via cookies, `credentials: "include"` on fetch
+- **Auth flow:** BetterAuth social providers (Google, Apple) via OAuth, sessions via cookies, `credentials: "include"` on fetch
 - **Real-time pattern:** HTTP for mutations → server broadcasts via WebSocket → clients invalidate TanStack Query cache
 - **Grid model:** Songs = columns, Steps = rows, Cells = intersections (completable + annotatable with threaded notes)
 - **Invite codes:** 6-char alphanumeric (excludes ambiguous chars 0/O/1/I)
@@ -66,4 +66,4 @@ cd apps/mobile && bun lint               # lint mobile (eslint-config-expo)
 ## Environment Variables
 
 **Mobile** (`apps/mobile/.env`): `EXPO_PUBLIC_API_URL`
-**Server** (`apps/server/.env`): `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`
+**Server** (`apps/server/.env`): `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `APPLE_CLIENT_ID`, `APPLE_CLIENT_SECRET`, `APPLE_APP_BUNDLE_IDENTIFIER`
