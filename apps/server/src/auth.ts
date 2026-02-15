@@ -2,12 +2,42 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { expo } from "@better-auth/expo";
 import { db } from "./db";
+import { user as userTable } from "./db/schema";
+import { eq } from "drizzle-orm";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
   plugins: [expo()],
+  account: {
+    accountLinking: {
+      enabled: true,
+    },
+  },
+  databaseHooks: {
+    account: {
+      create: {
+        after: async (account) => {
+          if (account.providerId === "google" || account.providerId === "apple") {
+            if (account.idToken) {
+              try {
+                const payload = JSON.parse(atob(account.idToken.split(".")[1]));
+                if (payload.picture) {
+                  await db
+                    .update(userTable)
+                    .set({ image: payload.picture })
+                    .where(eq(userTable.id, account.userId));
+                }
+              } catch {
+                // ignore parse errors
+              }
+            }
+          }
+        },
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
