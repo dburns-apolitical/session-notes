@@ -53,6 +53,7 @@ export const auth = betterAuth({
     "http://localhost:8081",
     "http://localhost:19006",
     "https://session-notes-web.netlify.app",
+    "https://app.session-sync.com/",
     "https://appleid.apple.com",
     "mobile://",
     ...(process.env.NODE_ENV === "development"
