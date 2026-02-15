@@ -1,47 +1,61 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import { Link } from "expo-router";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native";
 import { authClient } from "../../lib/auth-client";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<string | null>(null);
 
-  const handleSignIn = async () => {
-    setLoading(true);
+  const handleOAuthSignIn = async (provider: "google" | "apple") => {
+    setLoading(provider);
     try {
-      const { error } = await authClient.signIn.email({ email, password });
-      if (error) {
-        Alert.alert("Error", error.message || "Sign in failed");
-      }
+      await authClient.signIn.social({
+        provider,
+        callbackURL: "/(app)/(tabs)",
+      });
     } catch (error: any) {
-      Alert.alert("Error", error.message || "Sign in failed");
+      Alert.alert("Error", error.message || `Sign in with ${provider} failed`);
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Session Notes</Text>
-      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
-      <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
-      <TouchableOpacity style={styles.button} onPress={handleSignIn} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? "Signing in..." : "Sign In"}</Text>
+      <Text style={styles.subtitle}>Sign in to get started</Text>
+
+      <TouchableOpacity
+        style={[styles.button, styles.googleButton]}
+        onPress={() => handleOAuthSignIn("google")}
+        disabled={loading !== null}
+      >
+        <Text style={styles.googleButtonText}>
+          {loading === "google" ? "Signing in..." : "Sign in with Google"}
+        </Text>
       </TouchableOpacity>
-      <Link href="/(auth)/sign-up" style={styles.link}>
-        <Text>Don't have an account? Sign Up</Text>
-      </Link>
+
+      {Platform.OS === "ios" || Platform.OS === "web" ? (
+        <TouchableOpacity
+          style={[styles.button, styles.appleButton]}
+          onPress={() => handleOAuthSignIn("apple")}
+          disabled={loading !== null}
+        >
+          <Text style={styles.appleButtonText}>
+            {loading === "apple" ? "Signing in..." : "Sign in with Apple"}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", padding: 20 },
-  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 40 },
-  input: { borderWidth: 1, borderColor: "#ccc", borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },
-  button: { backgroundColor: "#007AFF", padding: 14, borderRadius: 8, alignItems: "center", marginBottom: 12 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  link: { textAlign: "center", marginTop: 12 },
+  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 8 },
+  subtitle: { fontSize: 16, color: "#666", textAlign: "center", marginBottom: 40 },
+  button: { padding: 14, borderRadius: 8, alignItems: "center", marginBottom: 12 },
+  googleButton: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#ddd" },
+  googleButtonText: { color: "#333", fontSize: 16, fontWeight: "600" },
+  appleButton: { backgroundColor: "#000" },
+  appleButtonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });
