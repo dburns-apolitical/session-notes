@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
 import { useJoinProject } from "../hooks/use-projects";
+import { theme } from "../constants/theme";
 import { useRouter } from "expo-router";
 
 export function JoinProjectInput() {
@@ -24,6 +25,7 @@ export function JoinProjectInput() {
       <TextInput
         style={styles.input}
         placeholder="Enter invite code"
+        placeholderTextColor={theme.textTertiary}
         value={code}
         onChangeText={(t) => setCode(t.toUpperCase().slice(0, 6))}
         maxLength={6}
@@ -42,8 +44,8 @@ export function JoinProjectInput() {
 
 const styles = StyleSheet.create({
   container: { flexDirection: "row", gap: 8, marginBottom: 16 },
-  input: { flex: 1, borderWidth: 1, borderColor: "#ccc", borderRadius: 8, padding: 12, fontSize: 16, letterSpacing: 4, textAlign: "center" },
-  button: { backgroundColor: "#007AFF", borderRadius: 8, paddingHorizontal: 20, justifyContent: "center" },
+  input: { flex: 1, borderWidth: 1, borderColor: theme.border, borderRadius: 8, padding: 12, fontSize: 16, letterSpacing: 4, textAlign: "center", color: theme.textPrimary, backgroundColor: theme.surfaceLight },
+  button: { backgroundColor: theme.accent, borderRadius: 8, paddingHorizontal: 20, justifyContent: "center" },
   buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
   disabled: { opacity: 0.5 },
 });

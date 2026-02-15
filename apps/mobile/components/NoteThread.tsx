@@ -1,4 +1,5 @@
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import { theme } from "../constants/theme";
 
 type Note = {
   id: string;
@@ -43,9 +44,9 @@ export function NoteThread({ notes }: Props) {
 
 const styles = StyleSheet.create({
   list: { flex: 1 },
-  note: { padding: 12, borderBottomWidth: 1, borderBottomColor: "#f0f0f0" },
-  content: { fontSize: 15, marginBottom: 4 },
-  meta: { fontSize: 12, color: "#999" },
+  note: { padding: 12, borderBottomWidth: 1, borderBottomColor: theme.border },
+  content: { fontSize: 15, marginBottom: 4, color: theme.textPrimary },
+  meta: { fontSize: 12, color: theme.textTertiary },
   empty: { padding: 20, alignItems: "center" },
-  emptyText: { color: "#999", fontSize: 14 },
+  emptyText: { color: theme.textSecondary, fontSize: 14 },
 });
