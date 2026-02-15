@@ -12,7 +12,7 @@ export const theme = {
   danger: "#FF453A",
   success: "#30D158",
   overlay: "rgba(0,0,0,0.7)",
-};
+} as const;
 
 export const stepColors = [
   "#FF3B30",
@@ -27,7 +27,7 @@ export const stepColors = [
   "#AF52DE",
   "#FF2D55",
   "#FF375F",
-];
+] as const;
 
 export function getStepColor(stepIndex: number): string {
   return stepColors[stepIndex % stepColors.length];

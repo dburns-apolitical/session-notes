@@ -1,6 +1,7 @@
 import * as LucideIcons from "lucide-react-native";
 import type { LucideIcon } from "lucide-react-native";
 import { StyleProp, ViewStyle } from "react-native";
+import { theme } from "../../constants/theme";
 
 type IconComponents = {
   [K in keyof typeof LucideIcons]: (typeof LucideIcons)[K] extends LucideIcon ? K : never;
@@ -12,7 +13,7 @@ export type IconName = IconKeys & string;
 export function Icon({
   name,
   size = 24,
-  color = "#000",
+  color = theme.textPrimary,
   style,
 }: {
   name: IconName;
