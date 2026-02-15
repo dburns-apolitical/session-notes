@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native";
 import { authClient } from "../../lib/auth-client";
+import { theme } from "../../constants/theme";
 
 const getCallbackURL = () => {
   if (Platform.OS === "web" && typeof window !== "undefined") {
@@ -57,12 +58,12 @@ export default function SignIn() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 20 },
-  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 8 },
-  subtitle: { fontSize: 16, color: "#666", textAlign: "center", marginBottom: 40 },
+  container: { flex: 1, justifyContent: "center", padding: 20, backgroundColor: theme.background },
+  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 8, color: theme.textPrimary },
+  subtitle: { fontSize: 16, color: theme.textSecondary, textAlign: "center", marginBottom: 40 },
   button: { padding: 14, borderRadius: 8, alignItems: "center", marginBottom: 12 },
-  googleButton: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#ddd" },
-  googleButtonText: { color: "#333", fontSize: 16, fontWeight: "600" },
-  appleButton: { backgroundColor: "#000" },
-  appleButtonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  googleButton: { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border },
+  googleButtonText: { color: theme.textPrimary, fontSize: 16, fontWeight: "600" },
+  appleButton: { backgroundColor: "#FFFFFF" },
+  appleButtonText: { color: "#000000", fontSize: 16, fontWeight: "600" },
 });

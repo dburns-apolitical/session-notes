@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useProjects } from "../../../hooks/use-projects";
+import { theme } from "../../../constants/theme";
 import { CreateProjectModal } from "../../../components/CreateProjectModal";
 import { JoinProjectInput } from "../../../components/JoinProjectInput";
 
@@ -55,16 +56,16 @@ export default function ProjectsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#f5f5f5" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { flex: 1, padding: 16, backgroundColor: theme.background },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: theme.background },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
-  title: { fontSize: 28, fontWeight: "bold" },
-  addButton: { backgroundColor: "#007AFF", paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
+  title: { fontSize: 28, fontWeight: "bold", color: theme.textPrimary },
+  addButton: { backgroundColor: theme.accent, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
   addButtonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  projectCard: { backgroundColor: "#fff", padding: 16, borderRadius: 12, marginBottom: 8, shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 4, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
-  projectName: { fontSize: 18, fontWeight: "600", marginBottom: 4 },
-  inviteCode: { fontSize: 14, color: "#666" },
+  projectCard: { backgroundColor: theme.surface, padding: 16, borderRadius: 12, marginBottom: 8, borderWidth: 1, borderColor: theme.border },
+  projectName: { fontSize: 18, fontWeight: "600", marginBottom: 4, color: theme.textPrimary },
+  inviteCode: { fontSize: 14, color: theme.textSecondary },
   empty: { alignItems: "center", marginTop: 40 },
-  emptyText: { fontSize: 18, color: "#999" },
-  emptySubtext: { fontSize: 14, color: "#bbb", marginTop: 4 },
+  emptyText: { fontSize: 18, color: theme.textSecondary },
+  emptySubtext: { fontSize: 14, color: theme.textTertiary, marginTop: 4 },
 });
