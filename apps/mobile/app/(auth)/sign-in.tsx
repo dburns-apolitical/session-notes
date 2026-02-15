@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Platform, Image } from "react-native";
 import { authClient } from "../../lib/auth-client";
 import { theme } from "../../constants/theme";
 
@@ -29,7 +29,7 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Session Notes</Text>
+      <Image source={require("../../assets/logo.png")} style={styles.logo} resizeMode="contain" />
       <Text style={styles.subtitle}>Sign in to get started</Text>
 
       <TouchableOpacity
@@ -59,7 +59,7 @@ export default function SignIn() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", padding: 20, backgroundColor: theme.background },
-  title: { fontSize: 28, fontWeight: "bold", textAlign: "center", marginBottom: 8, color: theme.textPrimary },
+  logo: { width: 400, height: 160, alignSelf: "center", marginBottom: 8 },
   subtitle: { fontSize: 16, color: theme.textSecondary, textAlign: "center", marginBottom: 40 },
   button: { padding: 14, borderRadius: 8, alignItems: "center", marginBottom: 12 },
   googleButton: { backgroundColor: theme.surface, borderWidth: 1, borderColor: theme.border },

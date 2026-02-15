@@ -1,13 +1,13 @@
 import { Stack } from "expo-router";
 import { useRouter } from "expo-router";
-import { Pressable, Text, StyleSheet } from "react-native";
+import { Pressable, Text, StyleSheet, Image } from "react-native";
 import { Icon } from "../../components/ui/Icon";
 import { theme } from "../../constants/theme";
 
 function BackButton() {
   const router = useRouter();
   return (
-    <Pressable onPress={() => router.back()} style={styles.backButton}>
+    <Pressable onPress={() => router.replace("/(app)/(tabs)")} style={styles.backButton}>
       <Icon name="ChevronLeft" size={20} color={theme.accent} />
       <Text style={styles.backText}>Projects</Text>
     </Pressable>
@@ -30,6 +30,13 @@ export default function AppLayout() {
           title: "",
           headerBackTitle: "Projects",
           headerLeft: () => <BackButton />,
+          headerRight: () => (
+            <Image
+              source={require("../../assets/logo.png")}
+              style={{ width: 64, height: 64, marginRight: 16 }}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
     </Stack>
