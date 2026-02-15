@@ -192,7 +192,7 @@ project:member-joined   { member }
 
 ## Open Decisions (to resolve during implementation)
 
-- UI library choice: Tamagui vs Nativewind vs plain StyleSheet
+- UI library choice: Nativewind
 - Grid component implementation: custom ScrollView-based or existing library
 - WebSocket reconnection strategy: exponential backoff parameters
 - Invite code format: alphanumeric vs numeric-only

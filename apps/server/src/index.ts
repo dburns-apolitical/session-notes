@@ -8,16 +8,23 @@ import { cells } from "./routes/cells";
 import { notes } from "./routes/notes";
 import { getWebSocketHandler, setServer } from "./ws";
 
+const allowedOrigins = ["http://localhost:8081", "http://localhost:19006"];
+
+function setCorsHeaders(res: Response, origin: string | null): Response {
+  const matched = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+  res.headers.set("Access-Control-Allow-Origin", matched);
+  res.headers.set("Access-Control-Allow-Credentials", "true");
+  res.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+  res.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return res;
+}
+
 const app = new Hono();
 
 app.use("/*", cors({
-  origin: ["http://localhost:8081", "http://localhost:19006"],
+  origin: allowedOrigins,
   credentials: true,
 }));
-
-app.on(["POST", "GET"], "/api/auth/**", (c) => {
-  return auth.handler(c.req.raw);
-});
 
 app.get("/health", (c) => c.json({ ok: true }));
 
@@ -44,6 +51,16 @@ const server = Bun.serve({
       });
       if (success) return undefined;
       return new Response("WebSocket upgrade failed", { status: 500 });
+    }
+
+    // Auth routes — handle before Hono so sub-router auth middleware doesn't intercept
+    if (url.pathname.startsWith("/api/auth")) {
+      const origin = req.headers.get("origin");
+      if (req.method === "OPTIONS") {
+        return setCorsHeaders(new Response(null, { status: 204 }), origin);
+      }
+      const response = await auth.handler(req);
+      return setCorsHeaders(response, origin);
     }
 
     return app.fetch(req);

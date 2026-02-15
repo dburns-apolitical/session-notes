@@ -43,14 +43,7 @@ const notes = new Hono()
       .values({ cellId, userId: user.id, content: body.content })
       .returning();
 
-    // Get projectId via cell -> song
-    const [noteCell] = await db.select().from(cell).where(eq(cell.id, cellId));
-    if (noteCell) {
-      const [noteSong] = await db.select().from(song).where(eq(song.id, noteCell.songId));
-      if (noteSong) {
-        broadcast(noteSong.projectId, "project:note-added", newNote);
-      }
-    }
+    broadcast(noteSong.projectId, "project:note-added", newNote);
 
     return c.json(newNote, 201);
   });
