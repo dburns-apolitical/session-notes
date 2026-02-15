@@ -9,5 +9,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  trustedOrigins: ["http://localhost:8081", "http://localhost:19006"],
+  trustedOrigins: [
+    "http://localhost:8081",
+    "http://localhost:19006",
+    "https://session-notes-web.netlify.app",
+  ],
 });
