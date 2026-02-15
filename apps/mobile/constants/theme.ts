@@ -1,31 +1,37 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+export const theme = {
+  background: "#121212",
+  surface: "#1E1E1E",
+  surfaceLight: "#2A2A2A",
+  border: "#333333",
+  textPrimary: "#FFFFFF",
+  textSecondary: "#A0A0A0",
+  textTertiary: "#666666",
+  accent: "#007AFF",
+  danger: "#FF453A",
+  success: "#30D158",
+  overlay: "rgba(0,0,0,0.7)",
 };
+
+export const stepColors = [
+  "#FF3B30",
+  "#FF6B2C",
+  "#FFB800",
+  "#34C759",
+  "#30D158",
+  "#00C7BE",
+  "#32ADE6",
+  "#007AFF",
+  "#5856D6",
+  "#AF52DE",
+  "#FF2D55",
+  "#FF375F",
+];
+
+export function getStepColor(stepIndex: number): string {
+  return stepColors[stepIndex % stepColors.length];
+}
 
 export const Fonts = Platform.select({
   ios: {
