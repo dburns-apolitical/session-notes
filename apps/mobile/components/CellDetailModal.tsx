@@ -13,6 +13,7 @@ import {
 import { useNotes, useAddNote } from "../hooks/use-notes";
 import { NoteThread } from "./NoteThread";
 import { Icon } from "./ui/Icon";
+import { theme } from "../constants/theme";
 
 type CellData = {
   id: string;
@@ -66,7 +67,7 @@ export function CellDetailModal({
               <Text style={styles.stepName}>{stepName}</Text>
             </View>
             <TouchableOpacity onPress={onClose} hitSlop={8}>
-              <Icon name="X" size={24} color="#007AFF" />
+              <Icon name="X" size={24} color={theme.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -76,7 +77,7 @@ export function CellDetailModal({
             <Switch
               value={cell.isComplete}
               onValueChange={(value) => onToggleComplete(cell.id, value)}
-              trackColor={{ true: "#4caf50" }}
+              trackColor={{ true: theme.success }}
             />
           </View>
 
@@ -110,11 +111,11 @@ export function CellDetailModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: theme.overlay,
     justifyContent: "flex-end",
   },
   modal: {
-    backgroundColor: "#fff",
+    backgroundColor: theme.surface,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     maxHeight: "80%",
@@ -126,23 +127,23 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: theme.border,
   },
-  songName: { fontSize: 18, fontWeight: "bold" },
-  stepName: { fontSize: 14, color: "#666", marginTop: 2 },
+  songName: { fontSize: 18, fontWeight: "bold", color: theme.textPrimary },
+  stepName: { fontSize: 14, color: theme.textSecondary, marginTop: 2 },
   toggleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: theme.border,
   },
-  toggleLabel: { fontSize: 16 },
+  toggleLabel: { fontSize: 16, color: theme.textPrimary },
   sectionTitle: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#999",
+    color: theme.textSecondary,
     padding: 16,
     paddingBottom: 8,
   },
@@ -150,21 +151,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 12,
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: theme.border,
     gap: 8,
     alignItems: "flex-end",
   },
   noteInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: theme.border,
     borderRadius: 8,
     padding: 10,
     fontSize: 14,
     maxHeight: 80,
+    color: theme.textPrimary,
+    backgroundColor: theme.surfaceLight,
   },
   sendButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: theme.accent,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,

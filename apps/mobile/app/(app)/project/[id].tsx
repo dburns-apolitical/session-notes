@@ -6,6 +6,7 @@ import { ProjectGrid } from "../../../components/ProjectGrid";
 import { CellDetailModal } from "../../../components/CellDetailModal";
 import { useState } from "react";
 import { useProjectWebSocket } from "../../../hooks/use-project-websocket";
+import { theme } from "../../../constants/theme";
 
 export default function ProjectScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -67,6 +68,6 @@ export default function ProjectScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { flex: 1, backgroundColor: theme.background },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: theme.background },
 });

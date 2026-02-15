@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import * as Clipboard from "expo-clipboard";
+import { theme } from "../constants/theme";
 
 type Props = {
   name: string;
@@ -27,11 +28,11 @@ export function ProjectHeader({ name, inviteCode, memberCount }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: "#fff", borderBottomWidth: 1, borderBottomColor: "#eee" },
-  name: { fontSize: 24, fontWeight: "bold", marginBottom: 8 },
+  container: { padding: 16, backgroundColor: theme.surface, borderBottomWidth: 1, borderBottomColor: theme.border },
+  name: { fontSize: 24, fontWeight: "bold", marginBottom: 8, color: theme.textPrimary },
   meta: { flexDirection: "row", alignItems: "center", gap: 16 },
-  codeBadge: { backgroundColor: "#f0f0f0", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 6 },
-  codeText: { fontSize: 16, fontWeight: "600", letterSpacing: 2 },
-  copyHint: { fontSize: 10, color: "#999", textAlign: "center" },
-  members: { fontSize: 14, color: "#666" },
+  codeBadge: { backgroundColor: theme.surfaceLight, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 6 },
+  codeText: { fontSize: 16, fontWeight: "600", letterSpacing: 2, color: theme.textPrimary },
+  copyHint: { fontSize: 10, color: theme.textTertiary, textAlign: "center" },
+  members: { fontSize: 14, color: theme.textSecondary },
 });
