@@ -7,7 +7,7 @@ const WS_URL = API_URL.replace(/^http/, "ws");
 export function useProjectWebSocket(projectId: string) {
   const queryClient = useQueryClient();
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const connect = useCallback(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
