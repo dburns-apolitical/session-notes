@@ -364,7 +364,36 @@ git commit -m "feat: remove sign-up screen (OAuth handles registration)"
 
 ---
 
-### Task 8: Update Environment Variables Documentation
+### Task 8: Update .env.example
+
+**Files:**
+- Modify: `apps/server/.env.example`
+
+**Step 1: Add new OAuth env vars to .env.example**
+
+Update `apps/server/.env.example` to:
+
+```
+DATABASE_URL=postgresql://user:password@host/dbname
+BETTER_AUTH_SECRET=generate-a-random-secret-at-least-32-chars
+BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+APPLE_CLIENT_ID=your-apple-service-id
+APPLE_CLIENT_SECRET=your-apple-client-secret
+APPLE_APP_BUNDLE_IDENTIFIER=your.bundle.id
+```
+
+**Step 2: Commit**
+
+```bash
+git add apps/server/.env.example
+git commit -m "chore: add OAuth env vars to .env.example"
+```
+
+---
+
+### Task 9: Update Environment Variables Documentation
 
 **Files:**
 - Modify: `CLAUDE.md`
@@ -397,7 +426,7 @@ git commit -m "docs: update CLAUDE.md for OAuth auth flow and env vars"
 
 ---
 
-### Task 9: Manual Smoke Test
+### Task 10: Manual Smoke Test
 
 This task requires environment variables to be configured. Before testing:
 
