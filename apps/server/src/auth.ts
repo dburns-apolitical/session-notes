@@ -14,4 +14,13 @@ export const auth = betterAuth({
     "http://localhost:19006",
     "https://session-notes-web.netlify.app",
   ],
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: false,
+    },
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+    },
+  },
 });

@@ -12,7 +12,10 @@ export default function SignUp() {
   const handleSignUp = async () => {
     setLoading(true);
     try {
-      await authClient.signUp.email({ name, email, password });
+      const { error } = await authClient.signUp.email({ name, email, password });
+      if (error) {
+        Alert.alert("Error", error.message || "Sign up failed");
+      }
     } catch (error: any) {
       Alert.alert("Error", error.message || "Sign up failed");
     } finally {

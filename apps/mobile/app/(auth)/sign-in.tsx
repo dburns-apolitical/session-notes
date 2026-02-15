@@ -11,7 +11,10 @@ export default function SignIn() {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      await authClient.signIn.email({ email, password });
+      const { error } = await authClient.signIn.email({ email, password });
+      if (error) {
+        Alert.alert("Error", error.message || "Sign in failed");
+      }
     } catch (error: any) {
       Alert.alert("Error", error.message || "Sign in failed");
     } finally {
