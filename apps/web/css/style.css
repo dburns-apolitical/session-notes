@@ -80,6 +80,36 @@ a:hover {
   color: #bbb;
 }
 
+.page__meta {
+  font-size: 0.875rem;
+  color: #777;
+  margin-bottom: 2rem;
+}
+
+.page h2 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.page h3 {
+  font-size: 1.05rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.page ul {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  color: #bbb;
+}
+
+.page li {
+  margin-bottom: 0.35rem;
+}
+
 .page__back {
   display: inline-block;
   margin-bottom: 2rem;
