@@ -54,6 +54,7 @@ export const auth = betterAuth({
     "http://localhost:19006",
     "https://session-notes-web.netlify.app",
     "https://app.session-sync.com",
+    "https://api.session-sync.com",
     "https://appleid.apple.com",
     "mobile://",
     ...(process.env.NODE_ENV === "development"
@@ -62,10 +63,11 @@ export const auth = betterAuth({
   ],
   advanced: {
     crossSubDomainCookies: {
-      enabled: false,
+      enabled: true,
+      domain: ".session-sync.com",
     },
     defaultCookieAttributes: {
-      sameSite: "none",
+      sameSite: "lax",
       secure: true,
     },
   },
