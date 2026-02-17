@@ -63,11 +63,10 @@ export const auth = betterAuth({
   ],
   advanced: {
     crossSubDomainCookies: {
-      enabled: true,
-      domain: ".session-sync.com",
+      enabled: false,
     },
     defaultCookieAttributes: {
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
     },
   },
