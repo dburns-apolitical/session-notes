@@ -61,31 +61,25 @@ const server = Bun.serve({
       }
 
       // === DIAGNOSTIC LOGGING (remove after debugging) ===
-      if (url.pathname.includes("/signin/google") || url.pathname.includes("/callback/google")) {
-        const cookieHeader = req.headers.get("cookie") || "(no cookies)";
-        const host = req.headers.get("host") || "(no host)";
-        const xForwardedHost = req.headers.get("x-forwarded-host") || "(none)";
-        const xForwardedProto = req.headers.get("x-forwarded-proto") || "(none)";
-        console.log(`\n=== AUTH DEBUG: ${url.pathname} ===`);
-        console.log(`  Method: ${req.method}`);
-        console.log(`  Full URL: ${req.url}`);
-        console.log(`  Host header: ${host}`);
-        console.log(`  X-Forwarded-Host: ${xForwardedHost}`);
-        console.log(`  X-Forwarded-Proto: ${xForwardedProto}`);
-        console.log(`  Cookies: ${cookieHeader}`);
-        console.log(`  Query params: ${url.search}`);
-      }
+      const cookieHeader = req.headers.get("cookie") || "(no cookies)";
+      const host = req.headers.get("host") || "(no host)";
+      const xForwardedProto = req.headers.get("x-forwarded-proto") || "(none)";
+      console.log(`\n=== AUTH DEBUG: ${req.method} ${url.pathname} ===`);
+      console.log(`  Full URL: ${req.url}`);
+      console.log(`  Host: ${host} | Proto: ${xForwardedProto}`);
+      console.log(`  Cookies: ${cookieHeader}`);
 
       const response = await auth.handler(req);
 
-      if (url.pathname.includes("/signin/google") || url.pathname.includes("/callback/google")) {
-        console.log(`  Response status: ${response.status}`);
-        console.log(`  Location: ${response.headers.get("location") || "(none)"}`);
-        const setCookies = response.headers.getSetCookie?.() || [];
-        console.log(`  Set-Cookie headers (${setCookies.length}):`);
+      console.log(`  Status: ${response.status}`);
+      const loc = response.headers.get("location");
+      if (loc) console.log(`  Location: ${loc}`);
+      const setCookies = response.headers.getSetCookie?.() || [];
+      if (setCookies.length) {
+        console.log(`  Set-Cookie (${setCookies.length}):`);
         setCookies.forEach((c: string) => console.log(`    ${c}`));
-        console.log(`=== END AUTH DEBUG ===\n`);
       }
+      console.log(`=== END ===\n`);
       // === END DIAGNOSTIC LOGGING ===
 
       return setCorsHeaders(response, origin);
