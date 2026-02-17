@@ -60,27 +60,7 @@ const server = Bun.serve({
         return setCorsHeaders(new Response(null, { status: 204 }), origin);
       }
 
-      // === DIAGNOSTIC LOGGING (remove after debugging) ===
-      const cookieHeader = req.headers.get("cookie") || "(no cookies)";
-      const host = req.headers.get("host") || "(no host)";
-      const xForwardedProto = req.headers.get("x-forwarded-proto") || "(none)";
-      console.log(`\n=== AUTH DEBUG: ${req.method} ${url.pathname} ===`);
-      console.log(`  Full URL: ${req.url}`);
-      console.log(`  Host: ${host} | Proto: ${xForwardedProto}`);
-      console.log(`  Cookies: ${cookieHeader}`);
-
       const response = await auth.handler(req);
-
-      console.log(`  Status: ${response.status}`);
-      const loc = response.headers.get("location");
-      if (loc) console.log(`  Location: ${loc}`);
-      const setCookies = response.headers.getSetCookie?.() || [];
-      if (setCookies.length) {
-        console.log(`  Set-Cookie (${setCookies.length}):`);
-        setCookies.forEach((c: string) => console.log(`    ${c}`));
-      }
-      console.log(`=== END ===\n`);
-      // === END DIAGNOSTIC LOGGING ===
 
       return setCorsHeaders(response, origin);
     }
