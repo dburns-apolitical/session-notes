@@ -4,7 +4,7 @@
   base = "apps/mobile"
 
 [build.environment]
-  EXPO_PUBLIC_API_URL = "https://session-notes-ohjde.ondigitalocean.app"
+  EXPO_PUBLIC_API_URL = "https://api.session-sync.com"
 
 [[redirects]]
   from = "/*"
